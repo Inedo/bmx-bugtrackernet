@@ -8,13 +8,11 @@ namespace Inedo.BuildMasterExtensions.BugTrackerNet
     /// Represents an issue from BugTracker.NET
     /// </summary>
     [Serializable]
-    internal sealed class BtnetIssue : Issue
+    internal sealed class BtnetIssue : IssueTrackerIssue
     {
         internal BtnetIssue(DataRow dr)
+             : base(dr["bg_id"].ToString(), dr["status"].ToString(), dr["bg_short_desc"].ToString(), string.Empty, string.Empty)
         {
-            IssueId = dr["bg_id"].ToString();
-            IssueStatus = dr["status"].ToString();
-            IssueTitle = dr["bg_short_desc"].ToString();
         }
     }
 }

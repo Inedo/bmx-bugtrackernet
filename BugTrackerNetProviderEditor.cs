@@ -8,7 +8,7 @@ namespace Inedo.BuildMasterExtensions.BugTrackerNet
 {
     internal sealed class BugTrackerNetProviderEditor : ProviderEditorBase
     {
-        private ConnectionStringTextBox txtConnectionString;
+        private ValidatingTextBox txtConnectionString;
         private ValidatingTextBox txtStatus;
         private TextBox txtReleaseNumberCustomField;
 
@@ -40,7 +40,7 @@ namespace Inedo.BuildMasterExtensions.BugTrackerNet
 
         protected override void CreateChildControls()
         {
-            this.txtConnectionString = new ConnectionStringTextBox { Required = true };
+            this.txtConnectionString = new ValidatingTextBox { Required = true };
             this.txtStatus = new ValidatingTextBox { Required = true };
             this.txtReleaseNumberCustomField = new TextBox();
 

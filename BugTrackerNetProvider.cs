@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using Inedo.BuildMaster;
-using Inedo.BuildMaster.Diagnostics;
 using Inedo.BuildMaster.Extensibility.Providers;
 using Inedo.BuildMaster.Extensibility.Providers.IssueTracking;
 using Inedo.BuildMaster.Web;
@@ -41,16 +40,16 @@ namespace Inedo.BuildMasterExtensions.BugTrackerNet
         [Persistent]
         public string ReleaseNumberCustomField { get; set; }
 
-        public override Issue[] GetIssues(string releaseNumber)
+        public override IssueTrackerIssue[] GetIssues(string releaseNumber)
         {
-            var issues = new List<Issue>();
+            var issues = new List<IssueTrackerIssue>();
             foreach (DataRow dr in ExecuteDataTable(BuildGetIssuesSql(releaseNumber)).Rows)
                 issues.Add(new BtnetIssue(dr));
 
             return issues.ToArray();
         }
 
-        public override bool IsIssueClosed(Issue issue)
+        public override bool IsIssueClosed(IssueTrackerIssue issue)
         {
             return string.Equals(issue.IssueStatus, ClosedStatusName, StringComparison.OrdinalIgnoreCase);
         }
@@ -82,7 +81,7 @@ namespace Inedo.BuildMasterExtensions.BugTrackerNet
             var conStr = new SqlConnectionStringBuilder(ConnectionString) { Pooling = false };
 
             var con = new SqlConnection(conStr.ToString());
-            con.InfoMessage += (s, e) => Tracer.Information(e.Message);
+            con.InfoMessage += (s, e) => this.LogDebug(e.Message);
 
             return con;
         }
